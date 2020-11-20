@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using MQTTnet.Client;
 using MQTTnet.Client.Connecting;
 using MQTTnet.Client.Disconnecting;
 using MQTTnet.Client.Options;
+using MQTTnet.Protocol;
 
 namespace Flespi.REST.API.Mqtt
 {
@@ -60,7 +62,7 @@ namespace Flespi.REST.API.Mqtt
             Console.WriteLine($"+ Retain = {eventArgs.ApplicationMessage.Retain}");
             Console.WriteLine();
 
-            await Task.Run(() => mqttClient.PublishAsync("hello/world"));
+            await Task.Run(() => mqttClient.SubscribeAsync().Result);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -70,6 +72,23 @@ namespace Flespi.REST.API.Mqtt
             {
                 await mqttClient.ReconnectAsync();
             }
+            else
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+            Console.WriteLine("Connected To Flespi!");
+        }
+
+        public async Task SubscribeToSensor(string topic)
+        {
+            var message = await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
+                .WithTopic(topic)
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+                .Build());
+
+            Console.WriteLine("### SUBSCRIBED ###");
+            Console.WriteLine("### RESULT: " + message.Items.FirstOrDefault()?.ResultCode);
+            Console.WriteLine("### RESULT: " + message.Items.FirstOrDefault()?.TopicFilter);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

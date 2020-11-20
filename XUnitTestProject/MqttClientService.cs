@@ -1,11 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flespi.REST.API.Mqtt;
+using Xunit;
 using Xunit.Sdk;
 
 namespace XUnitTestProject
 {
-    [TestClass]
     public class MqttClientService
     {
-        
+        private MQTTClientService testClient;
+
+        [Fact]
+        public void GetSensor()
+        {
+
+        }
     }
 }

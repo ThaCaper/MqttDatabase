@@ -76,17 +76,9 @@ namespace Flespi.REST.API
             services.AddScoped<ISensorRepository, SensorRepository>();
             services.AddScoped<ISensorService, SensorService>();
             services.AddControllers();
-            services.AddSingleton<ExternalService>();
-
-            services.AddSingleton<MqttService>();
-            services.AddHostedMqttServerWithServices(options => {
-                var s = options.ServiceProvider.GetRequiredService<MqttService>();
-                s.ConfigureMqttServerOptions(options);
-            });
-            services.AddMqttConnectionHandler();
-            services.AddMqttWebSocketServerAdapter();
-
+            
             services.AddMqttClientHostedService();
+            services.AddSingleton<ExternalService>();
 
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
@@ -117,21 +109,13 @@ namespace Flespi.REST.API
 
             app.UseCors("AllowSpecificOrigin");
 
-            app.UseMqttServer(server =>
-                app.ApplicationServices.GetRequiredService<MqttService>().ConfigureMqttServer(server));
-
             app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapMqtt("MQTT");
-            });
-            
-            /*app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Forbindelse oprettet.");
                 });
-            });*/
+            });
         }
     }
 }
