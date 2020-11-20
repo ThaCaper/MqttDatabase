@@ -62,7 +62,7 @@ namespace Flespi.REST.API.Mqtt
             Console.WriteLine($"+ Retain = {eventArgs.ApplicationMessage.Retain}");
             Console.WriteLine();
 
-            await Task.Run(() => mqttClient.SubscribeAsync().Result);
+            await Task.FromResult(mqttClient.SubscribeAsync().Result);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -76,7 +76,6 @@ namespace Flespi.REST.API.Mqtt
             {
                 cancellationToken.ThrowIfCancellationRequested();
             }
-            Console.WriteLine("Connected To Flespi!");
         }
 
         public async Task SubscribeToSensor(string topic)
