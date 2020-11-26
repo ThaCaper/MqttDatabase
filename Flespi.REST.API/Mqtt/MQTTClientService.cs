@@ -34,7 +34,7 @@ namespace Flespi.REST.API.Mqtt
         public async Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs)
         {
             Console.WriteLine("### CONNECTED TO SERVER ###");
-            await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("Topic/Tester").Build());
+            await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("+/temperatur/#").Build());
 
             Console.WriteLine("### SUBSCRIBED ###");
         }

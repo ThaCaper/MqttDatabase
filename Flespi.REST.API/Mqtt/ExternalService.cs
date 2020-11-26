@@ -1,4 +1,6 @@
-﻿namespace Flespi.REST.API.Mqtt
+﻿using MQTTnet;
+
+namespace Flespi.REST.API.Mqtt
 {
     public class ExternalService
     {
@@ -8,5 +10,8 @@
         {
             _mqttClientService = provider._mqttClientService;
         }
+
+
+
     }
 }
