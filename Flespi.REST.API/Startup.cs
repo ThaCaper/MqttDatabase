@@ -76,6 +76,8 @@ namespace Flespi.REST.API
 
             services.AddScoped<ISensorRepository, SensorRepository>();
             services.AddScoped<ISensorService, SensorService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllers();
             
             services.AddMqttClientHostedService();

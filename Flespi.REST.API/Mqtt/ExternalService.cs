@@ -11,7 +11,5 @@ namespace Flespi.REST.API.Mqtt
             _mqttClientService = provider.MqttClientService;
         }
 
-
-
     }
 }

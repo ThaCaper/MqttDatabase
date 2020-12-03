@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Dynamic;
 using Flespi.Entity;
 
-namespace Flespi.Core.DomainService
+namespace Flespi.Core.AppService
 {
-    public interface IUserRepository
+    public interface IUserService
     {
         User CreateUser(User newUser);
 

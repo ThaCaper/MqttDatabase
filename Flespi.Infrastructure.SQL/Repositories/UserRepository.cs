@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Flespi.Core.DomainService;
 using Flespi.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -23,22 +24,27 @@ namespace Flespi.Infrastructure.SQL.Repositories
 
         public List<User> GetAllUsers()
         {
-            throw new System.NotImplementedException();
+            return _context.Users.AsNoTracking().ToList();
         }
 
-        public int GetUserById(int id)
+        public User GetUserById(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Users.AsNoTracking().FirstOrDefault(u => u.Id == id);
         }
 
         public User UpdateUser(User updatedUser)
         {
-            throw new System.NotImplementedException();
+            _context.Attach(updatedUser).State = EntityState.Modified;
+            _context.Update(updatedUser);
+            _context.SaveChanges();
+            return updatedUser;
         }
 
-        public int DeleteUser(int id)
+        public User DeleteUser(int id)
         {
-            throw new System.NotImplementedException();
+            var userToDelete = _context.Remove(new User {Id = id}).Entity;
+            _context.SaveChanges();
+            return userToDelete;
         }
     }
 }
