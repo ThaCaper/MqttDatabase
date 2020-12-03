@@ -6,6 +6,7 @@ using Flespi.Core.AppService;
 using Flespi.Core.AppService.Impl;
 using Flespi.Core.DomainService;
 using Flespi.Infrastructure.SQL;
+using Flespi.Infrastructure.SQL.DbInitializer;
 using Flespi.Infrastructure.SQL.Repositories;
 using Flespi.REST.API.Extension;
 using Flespi.REST.API.Mqtt;
@@ -78,6 +79,7 @@ namespace Flespi.REST.API
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IDbInitializer, DbInitializer>();
             services.AddControllers();
             
             services.AddMqttClientHostedService();
@@ -93,6 +95,9 @@ namespace Flespi.REST.API
             {
                 var service = app.ApplicationServices.CreateScope().ServiceProvider;
                 var ctx = service.GetService<DatabaseContext>();
+                var dbInitializer = service.GetService<IDbInitializer>();
+                dbInitializer.Initialize(ctx);
+
                 ctx.Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
             }
@@ -100,6 +105,9 @@ namespace Flespi.REST.API
             {
                 var service = app.ApplicationServices.CreateScope().ServiceProvider;
                 var ctx = service.GetService<DatabaseContext>();
+                var dbInitializer = service.GetService<IDbInitializer>();
+                dbInitializer.Initialize(ctx);
+
                 ctx.Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
             }
