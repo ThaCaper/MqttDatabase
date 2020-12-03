@@ -17,5 +17,6 @@ namespace Flespi.Infrastructure.SQL
         }
 
         public DbSet<Sensor> Sensors { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
