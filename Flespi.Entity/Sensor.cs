@@ -2,8 +2,8 @@
 {
     public class Sensor
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public float Temp { get; set; }
+        public string Temp { get; set; }
     }
 }

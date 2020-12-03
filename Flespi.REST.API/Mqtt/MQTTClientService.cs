@@ -3,6 +3,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Flespi.Core.AppService;
+using Flespi.Entity;
+using Microsoft.AspNetCore.Mvc;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Connecting;
@@ -14,6 +17,7 @@ namespace Flespi.REST.API.Mqtt
 {
     public class MQTTClientService : IMQTTClientService
     {
+        public string Topic = "Topic/Tester";
         private IMqttClient mqttClient;
         private IMqttClientOptions options;
 
@@ -34,7 +38,7 @@ namespace Flespi.REST.API.Mqtt
         public async Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs)
         {
             Console.WriteLine("### CONNECTED TO SERVER ###");
-            await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("+/temperatur/#").Build());
+            await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(Topic).Build());
 
             Console.WriteLine("### SUBSCRIBED ###");
         }
@@ -55,14 +59,16 @@ namespace Flespi.REST.API.Mqtt
         }
         public async Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
+            char[] separators = new char[] { ',', ':' };
             Console.WriteLine("### RECEIVED APPLICATION MESSAGE ###");
             Console.WriteLine($"+ Topic = {eventArgs.ApplicationMessage.Topic}");
-            Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload)}");
+            Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload).Split(separators, StringSplitOptions.RemoveEmptyEntries).GetValue(3)}");
             Console.WriteLine($"+ QoS = {eventArgs.ApplicationMessage.QualityOfServiceLevel}");
             Console.WriteLine($"+ Retain = {eventArgs.ApplicationMessage.Retain}");
-            Console.WriteLine();
+            Console.WriteLine(); 
 
             await Task.FromResult(mqttClient.SubscribeAsync().Result);
+           
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

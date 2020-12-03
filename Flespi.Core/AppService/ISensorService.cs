@@ -9,6 +9,6 @@ namespace Flespi.Core.AppService
 
         List<Sensor> GetAllSensors();
 
-        Sensor GetSensorById(int id);
+        Sensor GetSensorById(string id);
     }
 }

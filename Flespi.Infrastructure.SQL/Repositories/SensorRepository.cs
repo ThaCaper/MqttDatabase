@@ -26,7 +26,7 @@ namespace Flespi.Infrastructure.SQL.Repositories
             return _context.Sensors.AsNoTracking().ToList();
         }
 
-        public Sensor GetSensorById(int id)
+        public Sensor GetSensorById(string id)
         {
             return _context.Sensors.AsNoTracking().FirstOrDefault(s => s.Id == id);
         }

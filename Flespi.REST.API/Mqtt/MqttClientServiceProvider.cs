@@ -2,11 +2,11 @@
 {
     public class MqttClientServiceProvider
     {
-        public readonly IMQTTClientService _mqttClientService;
+        public readonly IMQTTClientService MqttClientService;
 
         public MqttClientServiceProvider(IMQTTClientService mqttClientService)
         {
-            _mqttClientService = mqttClientService;
+            MqttClientService = mqttClientService;
         }
     }
 }

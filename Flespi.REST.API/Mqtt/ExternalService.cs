@@ -8,7 +8,7 @@ namespace Flespi.REST.API.Mqtt
 
         public ExternalService(MqttClientServiceProvider provider)
         {
-            _mqttClientService = provider._mqttClientService;
+            _mqttClientService = provider.MqttClientService;
         }
 
 

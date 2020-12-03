@@ -23,7 +23,7 @@ namespace Flespi.Core.AppService.Impl
             return _sensorRepository.GetAllSensors();
         }
 
-        public Sensor GetSensorById(int id)
+        public Sensor GetSensorById(string id)
         {
             return _sensorRepository.GetSensorById(id);
         }
