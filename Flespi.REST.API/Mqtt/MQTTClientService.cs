@@ -20,6 +20,7 @@ namespace Flespi.REST.API.Mqtt
         public string Topic = "Topic/Tester";
         private IMqttClient mqttClient;
         private IMqttClientOptions options;
+        private readonly ISensorService _sensorService;
 
         public MQTTClientService(IMqttClientOptions options)
         {
@@ -65,10 +66,19 @@ namespace Flespi.REST.API.Mqtt
             Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload).Split(separators, StringSplitOptions.RemoveEmptyEntries).GetValue(3)}");
             Console.WriteLine($"+ QoS = {eventArgs.ApplicationMessage.QualityOfServiceLevel}");
             Console.WriteLine($"+ Retain = {eventArgs.ApplicationMessage.Retain}");
-            Console.WriteLine(); 
+            Console.WriteLine();
+
+            Sensor sensor = new Sensor
+            {
+                Id = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload)
+                    .Split(separators, StringSplitOptions.RemoveEmptyEntries).GetValue(1).ToString(),
+                Temp = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload)
+                    .Split(separators, StringSplitOptions.RemoveEmptyEntries).GetValue(3).ToString()
+            };
 
             await Task.FromResult(mqttClient.SubscribeAsync().Result);
            
+            _sensorService.CreateSensor(sensor);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
